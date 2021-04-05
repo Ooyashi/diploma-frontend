@@ -1,4 +1,6 @@
 import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import {
   Avatar,
   Button,
@@ -17,11 +19,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-function Copyright() {
+function Copyright(): JSX.Element {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com">
+      <Link color="inherit" href="https://material-ui.com/">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -29,6 +31,13 @@ function Copyright() {
     </Typography>
   );
 }
+
+const loginValidationSchema = Yup.object({
+  email: Yup.string().email().required('Required'),
+  password: Yup.string()
+    .min(6, 'Password should be longer than 6 characters')
+    .required(),
+});
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,16 +51,29 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%',
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function Login(): JSX.Element {
+export default function LoginForm(): JSX.Element {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      remember: false,
+    },
+    validationSchema: loginValidationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+  const onCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formik.values.remember = e.target.checked;
+  };
   const classes = useStyles();
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -62,7 +84,7 @@ export default function Login(): JSX.Element {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={formik.handleSubmit} className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -73,6 +95,11 @@ export default function Login(): JSX.Element {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             variant="outlined"
@@ -84,11 +111,24 @@ export default function Login(): JSX.Element {
             type="password"
             id="password"
             autoComplete="current-password"
+            autoFocus
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value="remember"
+                color="primary"
+                onChange={onCheckedChange}
+              />
+            }
             label="Remember me"
           />
+
           <Button
             type="submit"
             fullWidth
@@ -98,6 +138,7 @@ export default function Login(): JSX.Element {
           >
             Sign In
           </Button>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
@@ -105,7 +146,7 @@ export default function Login(): JSX.Element {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

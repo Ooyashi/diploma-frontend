@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import {
   Avatar,
   Button,
@@ -16,6 +17,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { useFormik } from 'formik';
 
 function Copyright(): JSX.Element {
   return (
@@ -29,6 +31,14 @@ function Copyright(): JSX.Element {
     </Typography>
   );
 }
+const registerValidationSchema = Yup.object({
+  firstName: Yup.string().min(4).required('This is required field'),
+  lastName: Yup.string().min(6).required('This is required field'),
+  email: Yup.string().email().required('This is required field'),
+  password: Yup.string()
+    .min(6, 'Password should be longer than 6 characters')
+    .required(),
+});
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,7 +61,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp(): JSX.Element {
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      allowExtraEmails: false,
+    },
+    validationSchema: registerValidationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+  const onCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formik.values.allowExtraEmails = e.target.checked;
+  };
   const classes = useStyles();
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -62,7 +89,7 @@ export default function SignUp(): JSX.Element {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={formik.handleSubmit} className={classes.form}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -73,7 +100,13 @@ export default function SignUp(): JSX.Element {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                autoFocus
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.firstName && Boolean(formik.errors.firstName)
+                }
+                helperText={formik.touched.firstName && formik.errors.firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -85,6 +118,13 @@ export default function SignUp(): JSX.Element {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.lastName && Boolean(formik.errors.lastName)
+                }
+                helperText={formik.touched.lastName && formik.errors.lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,6 +136,11 @@ export default function SignUp(): JSX.Element {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -108,11 +153,24 @@ export default function SignUp(): JSX.Element {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={
+                  <Checkbox
+                    value="allowExtraEmails"
+                    color="primary"
+                    onChange={onCheckedChange}
+                  />
+                }
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
@@ -128,7 +186,7 @@ export default function SignUp(): JSX.Element {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
