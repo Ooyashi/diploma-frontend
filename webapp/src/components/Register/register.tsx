@@ -18,7 +18,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, useFormik } from 'formik';
-import Header from '../Header/header';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000',
@@ -225,18 +224,6 @@ export default function SignUp(): JSX.Element {
                 )}
               </InputMask>
             </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="allowExtraEmails"
-                    color="primary"
-                    onChange={onCheckedChange}
-                  />
-                }
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
           </Grid>
           <Button
             type="submit"

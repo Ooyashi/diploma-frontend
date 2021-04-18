@@ -81,9 +81,6 @@ export default function LoginForm(): JSX.Element {
       await loginUser(values);
     },
   });
-  // const onCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   formik.values.remember = e.target.checked;
-  // };
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
@@ -129,17 +126,6 @@ export default function LoginForm(): JSX.Element {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          {/* <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                color="primary"
-                onChange={onCheckedChange}
-              />
-            }
-            label="Remember me"
-          /> */}
-
           <Button
             type="submit"
             fullWidth
