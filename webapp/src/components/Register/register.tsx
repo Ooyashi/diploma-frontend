@@ -1,12 +1,12 @@
 import React from 'react';
 import * as Yup from 'yup';
+import axios from 'axios';
+import InputMask from 'react-input-mask';
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
@@ -17,7 +17,34 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useFormik } from 'formik';
+import { Formik, useFormik } from 'formik';
+
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:5000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+async function registerUser(
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  phoneNumber: string,
+) {
+  axiosInstance.post(
+    '/v1/auth/register/:type',
+    {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+    },
+    { params: { type: 'User' } },
+  );
+}
 
 function Copyright(): JSX.Element {
   return (
@@ -63,20 +90,24 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp(): JSX.Element {
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      allowExtraEmails: false,
+      firstName: 'sample foo',
+      lastName: 'sample bar',
+      email: 'fooBar@gmail.com',
+      password: 'fooBarPass',
+      phoneNumber: '',
     },
     validationSchema: registerValidationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      await registerUser(
+        values.firstName,
+        values.lastName,
+        values.email,
+        values.password,
+        values.phoneNumber,
+      );
     },
   });
-  const onCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formik.values.allowExtraEmails = e.target.checked;
-  };
+
   const classes = useStyles();
 
   return (
@@ -127,6 +158,7 @@ export default function SignUp(): JSX.Element {
                 helperText={formik.touched.lastName && formik.errors.lastName}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -163,16 +195,34 @@ export default function SignUp(): JSX.Element {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="allowExtraEmails"
-                    color="primary"
-                    onChange={onCheckedChange}
+              <InputMask
+                mask="(099) 999 99 99"
+                value={formik.values.phoneNumber}
+                disabled={false}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {() => (
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="phoneNumber"
+                    label="Phone Number"
+                    name="phoneNumber"
+                    value={formik.values.phoneNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.phoneNumber &&
+                      Boolean(formik.errors.phoneNumber)
+                    }
+                    helperText={
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                    }
                   />
-                }
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+                )}
+              </InputMask>
             </Grid>
           </Grid>
           <Button

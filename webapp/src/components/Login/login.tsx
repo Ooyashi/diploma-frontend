@@ -19,6 +19,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+async function loginUser(credentials: any) {
+  return fetch('http://localhost:5000/v1/auth/login', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  }).then((data) => data.json());
+}
+
 function Copyright(): JSX.Element {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -63,16 +74,13 @@ export default function LoginForm(): JSX.Element {
     initialValues: {
       email: '',
       password: '',
-      remember: false,
+      // remember: false,
     },
     validationSchema: loginValidationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      await loginUser(values);
     },
   });
-  const onCheckedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formik.values.remember = e.target.checked;
-  };
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
@@ -118,17 +126,6 @@ export default function LoginForm(): JSX.Element {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                color="primary"
-                onChange={onCheckedChange}
-              />
-            }
-            label="Remember me"
-          />
-
           <Button
             type="submit"
             fullWidth
