@@ -7,17 +7,27 @@ import {
   Switch,
   useParams,
 } from 'react-router-dom';
-import { HomeComponent, LoginComponent, RegisterComponent } from './components';
+import {
+  CartComponent,
+  CheckoutComponent,
+  HomeComponent,
+  LoginComponent,
+  ProductListsComponent,
+  RegisterComponent,
+} from './components';
 import Header from './components/Header/header';
 class App extends React.Component {
   render(): JSX.Element {
     return (
       <Router>
-        <Header />
+        {/* <Header /> */}
         <Switch>
+          <Route exact path="/" component={ProductListsComponent} />
+          <Route exact path="/cart" component={CartComponent} />
+          <Route exact path="/checkout" component={CheckoutComponent} />
           <Route path="/login" component={LoginComponent} />
           <Route path="/register/:type" component={RegisterComponent} />
-          <Route path="/" component={HomeComponent} />
+          {/* <Route path="/" component={HomeComponent} /> */}
         </Switch>
       </Router>
     );

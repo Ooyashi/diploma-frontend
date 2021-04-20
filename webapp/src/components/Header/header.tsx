@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-key */
+import React from 'react';
+
 import {
   AppBar,
   Button,
@@ -6,22 +8,21 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { uuid } from 'uuidv4';
-import React from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
 const headersData = [
   {
-    key: uuid(),
+    key: 1,
     label: 'Home',
     href: '/',
   },
   {
-    key: uuid(),
+    key: 2,
     label: 'Register',
     href: '/register/User',
   },
   {
-    key: uuid(),
+    key: 3,
     label: 'Login',
     href: '/login',
   },
