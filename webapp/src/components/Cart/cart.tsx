@@ -17,7 +17,7 @@ export default class Cart extends React.Component<MyProps, MyState> {
     getCartProducts(cart).then((products: any) => {
       let total = 0;
       for (let i = 0; i < products.length; i++) {
-        total += products[i].price * products[i].qty;
+        total += products[i].partPrice * products[i].partQuantity;
       }
       this.setState({ products, total });
     });
@@ -30,7 +30,7 @@ export default class Cart extends React.Component<MyProps, MyState> {
     const cart = JSON.parse(localStorage.getItem('cart') || '{}');
     delete cart[product.id.toString()];
     localStorage.setItem('cart', JSON.stringify(cart));
-    const total = this.state.total - product.qty * product.price;
+    const total = this.state.total - product.partQuantity * product.partPrice;
     this.setState({ products, total });
   };
 
@@ -41,6 +41,7 @@ export default class Cart extends React.Component<MyProps, MyState> {
 
   render(): JSX.Element {
     const { products, total } = this.state;
+
     return (
       <div className=" container">
         <h3 className="card-title">Cart</h3>

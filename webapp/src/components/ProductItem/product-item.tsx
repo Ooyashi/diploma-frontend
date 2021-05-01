@@ -18,13 +18,15 @@ export default class ProductItem extends React.Component<MyProps, MyState> {
     const cart = localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart') || '{}')
       : {};
+
     const id = this.props.product.id.toString();
 
     cart[id] = cart[id] ? cart[id] : 0;
 
     const qty: number = cart[id] + parseInt(this.state.quantity);
-    if (this.props.product.available_quantity < qty) {
-      cart[id] = this.props.product.available_quantity;
+
+    if (this.props.product.partQuantity < qty) {
+      cart[id] = this.props.product.partQuantity;
     } else {
       cart[id] = qty;
     }
@@ -37,16 +39,16 @@ export default class ProductItem extends React.Component<MyProps, MyState> {
     return (
       <div className="card" style={{ marginBottom: '10px' }}>
         <div className="card-body">
-          <h4 className="card-title">{product.name}</h4>
-          <p className="card-text">{product.description}</p>
+          <h4 className="card-title">{product.partName}</h4>
+          <p className="card-text">{product.partDescription}</p>
           <h5 className="card-text">
-            <small>price: </small>${product.price}
+            <small>price: </small>${product.partPrice}
           </h5>
           <span className="card-text">
             <small>Available Quantity: </small>
-            {product.available_quantity}
+            {product.partQuantity}
           </span>
-          {product.available_quantity > 0 ? (
+          {product.partQuantity > 0 ? (
             <div>
               <button
                 className="btn btn-sm btn-warning float-right"
