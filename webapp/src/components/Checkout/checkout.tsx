@@ -16,9 +16,11 @@ export default class Checkout extends React.Component<MyProps, MyState> {
     if (!cart) return;
     getCartProducts(cart).then((products) => {
       let total = 0;
+
       for (let i = 0; i < products.length; i++) {
-        total += products[i].price * products[i].qty;
+        total += products[i].partPrice * products[i].partQuantity;
       }
+
       this.setState({ products, total });
     });
   }
@@ -37,9 +39,10 @@ export default class Checkout extends React.Component<MyProps, MyState> {
         {products.map((product: any, index) => (
           <div key={index}>
             <p>
-              {product.name} <small> (quantity: {product.qty})</small>
+              {product.partName}{' '}
+              <small> (quantity: {product.partQuantity})</small>
               <span className="float-right text-primary">
-                ${product.qty * product.price}
+                ${product.partQuantity * product.partPrice}
               </span>
             </p>
             <hr />

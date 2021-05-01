@@ -18,7 +18,7 @@ const routes = [
     exact: true,
   },
   {
-    path: '/register/user',
+    path: '/register/client',
     name: 'Register',
     component: RegisterComponent,
     exact: true,

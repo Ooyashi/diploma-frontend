@@ -9,16 +9,17 @@ export default class CartItem extends React.Component<MyProps, MyState> {
 
   render(): JSX.Element {
     const { product } = this.props;
+
     return (
       <div className="card" style={{ marginBottom: '10px' }}>
         <div className="card-body">
-          <h4 className="card-title">{product.name}</h4>
+          <h4 className="card-title">{product.partName}</h4>
           <h5 className="card-text">
-            <small>price: </small>${product.price}
+            <small>price: </small>${product.partPrice}
           </h5>
           <span className="card-text text-success">
             <small>Quantity: </small>
-            {product.qty}
+            {product.partQuantity}
           </span>
           <button
             className="btn btn-sm btn-warning float-right"
