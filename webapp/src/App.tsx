@@ -15,19 +15,20 @@ import {
   ProductListsComponent,
   RegisterComponent,
 } from './components';
-import Header from './components/Header/header';
+
 class App extends React.Component {
   render(): JSX.Element {
     return (
       <Router>
         {/* <Header /> */}
         <Switch>
-          <Route exact path="/" component={ProductListsComponent} />
+          {/* <Route exact path="/admin" component={AdminComponent} /> */}
+          <Route exact path="/catalogue" component={ProductListsComponent} />
           <Route exact path="/cart" component={CartComponent} />
           <Route exact path="/checkout" component={CheckoutComponent} />
           <Route path="/login" component={LoginComponent} />
           <Route path="/register/Client" component={RegisterComponent} />
-          {/* <Route path="/" component={HomeComponent} /> */}
+          <Route path="/" component={HomeComponent} />
         </Switch>
       </Router>
     );

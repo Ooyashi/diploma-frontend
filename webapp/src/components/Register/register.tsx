@@ -33,13 +33,15 @@ async function registerUser(
   password: string,
   phoneNumber: string,
 ) {
-  axiosInstance.post('/v1/auth/register/client', {
-    firstName,
-    lastName,
-    email,
-    password,
-    phoneNumber,
-  });
+  axiosInstance
+    .post('/v1/auth/register/client', {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+    })
+    .catch((error) => error);
 }
 
 function Copyright(): JSX.Element {

@@ -10,7 +10,7 @@ export class HomeComponent extends React.Component<
     this.state = { apiResponse: '' };
   }
   callApi(): void {
-    this.setState({ apiResponse: 'Hello from Api' });
+    this.setState({ apiResponse: 'Welcome to my Website!' });
   }
   componentDidMount(): void {
     this.callApi();
@@ -19,6 +19,8 @@ export class HomeComponent extends React.Component<
     return (
       <div className="App">
         <Header />
+        <h1>A</h1>
+        <br></br>
         <h2>{this.state.apiResponse}</h2>
       </div>
     );
