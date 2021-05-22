@@ -13,6 +13,12 @@ export function getCartProducts(cart: any) {
     .post(`${BASE_URL}/v1/catalogue/products`, { cart })
     .then((response) => response.data);
 }
+
+export function getPartsByVinCode(vinCode: string) {
+  return axios
+    .post(`${BASE_URL}/v1/part/search`, { vinCode })
+    .then((response) => response.data);
+}
 // export function login(data: any) {
 //   return axios
 //     .post(`${BASE_URL}/api/auth`, { name: data.name, password: data.password })

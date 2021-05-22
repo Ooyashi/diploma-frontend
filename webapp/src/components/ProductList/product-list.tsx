@@ -1,16 +1,29 @@
 import React from 'react';
 import ProductItem from '../ProductItem/product-item';
-import { getProducts } from '../../repositories/repository';
+import { getPartsByVinCode, getProducts } from '../../repositories/repository';
 import { Link } from 'react-router-dom';
 type MyProps = { product: any };
-type MyState = { products: [] };
+type MyState = { products: []; vinCode: string };
 
 export default class ProductList extends React.Component<MyProps, MyState> {
   constructor(props: any) {
     super(props);
     this.state = {
       products: [],
+      vinCode: '',
     };
+  }
+
+  handleVinCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ vinCode: e.target.value });
+  };
+
+  getPartsByVinCode() {
+    const vinCode = this.state.vinCode;
+
+    getPartsByVinCode(vinCode).then((products: any) =>
+      this.setState({ products }),
+    );
   }
 
   componentDidMount() {
@@ -23,6 +36,22 @@ export default class ProductList extends React.Component<MyProps, MyState> {
     return (
       <div className=" container">
         <h3 className="card-title">
+          <p>Vin Code Part Search</p>
+          <input
+            name="vinCode"
+            type="text"
+            size={20}
+            value={this.state.vinCode}
+            onChange={this.handleVinCodeChange}
+          ></input>
+          <button
+            className="btn btn-primary"
+            onClick={() => this.getPartsByVinCode()}
+          >
+            Search
+          </button>
+          <br></br>
+          <br></br>
           List of Available Products
           <Link to="/checkout">
             <button className="btn btn-success float-right">Checkout</button>

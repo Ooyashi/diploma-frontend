@@ -41,6 +41,12 @@ export default class ProductItem extends React.Component<MyProps, MyState> {
         <div className="card-body">
           <h4 className="card-title">{product.partName}</h4>
           <p className="card-text">{product.partDescription}</p>
+          <h5 className="card-title">
+            For Car:
+            <small>
+              {product.partForCar.carBrand} {product.partForCar.carModel}
+            </small>
+          </h5>
           <h5 className="card-text">
             <small>price: </small>${product.partPrice}
           </h5>

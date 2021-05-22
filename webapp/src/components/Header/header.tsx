@@ -19,7 +19,7 @@ const headersData = [
   {
     key: 2,
     label: 'Register',
-    href: '/register/User',
+    href: '/register/Client',
   },
   {
     key: 3,
