@@ -18,11 +18,16 @@ const headersData = [
   },
   {
     key: 2,
+    label: 'Catalogue',
+    href: '/catalogue',
+  },
+  {
+    key: 3,
     label: 'Register',
     href: '/register/Client',
   },
   {
-    key: 3,
+    key: 4,
     label: 'Login',
     href: '/login',
   },
@@ -63,7 +68,7 @@ export default function Header(): JSX.Element {
   };
   const customLogo = (
     <Typography variant="h6" component="h1" className={logo}>
-      Logo
+      AutoDrug
     </Typography>
   );
 
