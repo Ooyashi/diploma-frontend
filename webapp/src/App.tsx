@@ -4,8 +4,7 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  useParams,
+  Switch
 } from 'react-router-dom';
 import {
   CartComponent,
@@ -20,9 +19,7 @@ class App extends React.Component {
   render(): JSX.Element {
     return (
       <Router>
-        {/* <Header /> */}
         <Switch>
-          {/* <Route exact path="/admin" component={AdminComponent} /> */}
           <Route exact path="/catalogue" component={ProductListsComponent} />
           <Route exact path="/cart" component={CartComponent} />
           <Route exact path="/checkout" component={CheckoutComponent} />

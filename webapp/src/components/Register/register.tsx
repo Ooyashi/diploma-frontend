@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import * as Yup from 'yup';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
@@ -18,6 +18,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, useFormik } from 'formik';
+import { Redirect } from 'react-router-dom';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000',
@@ -86,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp(): JSX.Element {
+  const [submitted, setSubmitted] = useState(false);
   const formik = useFormik({
     initialValues: {
       firstName: 'sample foo',
@@ -103,6 +105,7 @@ export default function SignUp(): JSX.Element {
         values.password,
         values.phoneNumber,
       );
+      setSubmitted(true);
     },
   });
 
@@ -232,6 +235,7 @@ export default function SignUp(): JSX.Element {
           >
             Sign Up
           </Button>
+          <Fragment>{submitted ? <Redirect to="/users" /> : ''}</Fragment>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/login" variant="body2">
