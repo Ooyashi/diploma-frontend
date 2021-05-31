@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -18,6 +18,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { Redirect } from 'react-router-dom';
 
 async function loginUser(credentials: any) {
   return fetch('http://localhost:5000/v1/auth/login', {
@@ -70,15 +71,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function LoginForm(): JSX.Element {
+  const [submitted, setSubmitted] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
-      // remember: false,
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      await loginUser(values);
+      if (await loginUser(values)) {
+        setSubmitted(true);
+      }
     },
   });
   const classes = useStyles();
@@ -135,7 +138,7 @@ export default function LoginForm(): JSX.Element {
           >
             Sign In
           </Button>
-
+          <Fragment>{submitted ? <Redirect to="/users" /> : ''}</Fragment>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
